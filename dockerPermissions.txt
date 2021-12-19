@@ -1,5 +1,4 @@
-
-    Docker on Linux runs as a daemon. The official installation instructions 
+Docker on Linux runs as a daemon. The official installation instructions 
 recommend installing as root and selectively adding users to the docker group so 
 they can run all Docker commands.
         
@@ -47,32 +46,3 @@ CASE III - Run as non-root internal user
         
     Verdict: non-root internal user with required permissions works great inside 
         the container but completely falters on host system with volumes.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
