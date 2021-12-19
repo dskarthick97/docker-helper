@@ -1,0 +1,78 @@
+
+    Docker on Linux runs as a daemon. The official installation instructions 
+recommend installing as root and selectively adding users to the docker group so 
+they can run all Docker commands.
+        
+    When a new container is created it does not get created as the current user, 
+but as root, which the daemon is running under.
+
+NOTE: 
+    - use bind mount for better understanding the permissions
+    - inside docker  --> docker exec <container_name> <command>
+    - outside docker --> <command>
+
+
+CASE I - Without using -u flag during docker run
+
+
+    files / Folders generated inside container  - root user priviledge.
+    files / folders generated outsite container - current local user priviledge.
+    
+    Issue: Since the files / folders generated inside the container has the root
+        priviledge, attempting to do anything other than read will result in
+        permission denied.
+            
+    Verdict: root works great inside the container but is annoying to work with 
+        on the host system.
+
+CASE II - Run as a local user by specifying -u flag during docker run
+
+    i.e,. -u $(id -u ${USER}):$(id -g ${USER})
+    
+    Files / Folders generated inside container  - current local user priviledge.
+    files / folders generated outsite container - current local user priviledge.
+    
+    Issue: This does exactly what we want, but any internal cache directories 
+        cannot be written to since they are root-owned.
+            
+    Verdict: local user works great on the host system, but will quickly run 
+        into permission problems inside the container.
+
+CASE III - Run as non-root internal user
+
+    Some container will have internal non-root user.
+    
+    Issue: The problem is that the internal container user does not have write 
+        permissions to the host’s current directory.
+        
+    Verdict: non-root internal user with required permissions works great inside 
+        the container but completely falters on host system with volumes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
